@@ -1,0 +1,21 @@
+need grid of x size
+make distribute bombs
+make squares clickable
+make squares show numbers when opened
+when bomb clicked show all bombs
+make it possible to mark squares with flags
+make gameover if bomb is clicked
+auto open 0 squares
+reset button
+show amount of bombs left
+timer
+difficulty selection
+victory screen
+themes choose
+styling
+add colors
+pixel font
+resizing adaptation
+mobile adaptation
+themes
+icons

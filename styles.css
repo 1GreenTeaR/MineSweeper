@@ -1,0 +1,119 @@
+html {
+    background-color: rgb(21, 9, 14);
+    color: white;
+    font-family: 'Open Sans', sans-serif;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+#header {
+    background-color: rgb(42, 18, 28);
+    min-height: 50px;
+    width: 500px;
+    border-radius: 10px;
+    margin: 10px;
+    transition: background-color 300ms;
+}
+
+#header.game-over {
+    background-color: rgb(206, 52, 65);
+}
+
+.box {
+    background-color: rgb(42, 18, 28);
+    height: 40px;
+    width: 40px;
+    border-radius: 10px;
+    transition: background-color 0.2s;
+}
+
+#board {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3, 40px);
+    gap: 5px;
+    border: 5px solid rgb(42, 18, 28);
+    padding: 5px;
+    border-radius: 10px;
+}
+
+.red-color {
+    color: red;
+    font-weight: 900;
+
+}
+
+.opened {
+    background-color: rgb(6, 6, 33);
+}
+
+.bomb {
+    background-image: url(assets/bomb.svg);
+}
+
+.flag {
+    background-color: unset;
+    color: white;
+    background-image: url(assets/flag.svg);
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.6);
+    flex-direction: column;
+}
+
+.game-over-text {
+    font-size: 40px;
+    font-weight: 700;
+}
+
+.button {
+    height: 60px;
+    border-radius: 10px;
+    padding: 0 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    font-family: inherit;
+    background-color: rgb(42, 18, 28);
+    outline: none;
+    border: none;
+    font-weight: 700;
+    color: white;
+}
+
+.button.primary {
+    background-color: rgb(21, 114, 190);
+    color: rgb(0, 0, 0);
+}
+
+@keyframes highlight {
+    0% {}
+    50% {
+      background-color: red;
+    }
+    100% {}
+  }
+
+.highlight {
+    /* animation-name: highlight;
+    animation-duration: 1s;
+    animation-iteration-count: infinite; */
+    animation: highlight 500ms infinite;
+}
