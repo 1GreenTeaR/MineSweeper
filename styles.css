@@ -1,7 +1,17 @@
+:root {
+    --palette-background: rgb(21, 9, 14);
+    --palette-surface-primary:rgb(42, 18, 28);
+
+    --font-weight-regular: 400;
+    --font-weight-bold: 700;
+    --font-weight-black: 900;
+}
+
 html {
-    background-color: rgb(21, 9, 14);
+    background-color: var(--palette-background);
     color: white;
-    font-family: 'Open Sans', sans-serif;
+    /* font-family: 'Open Sans', sans-serif; */
+    font-family: "Exo 2", sans-serif;
 }
 
 body {
@@ -14,7 +24,7 @@ body {
 }
 
 #header {
-    background-color: rgb(42, 18, 28);
+    background-color: var(--palette-surface-primary);
     min-height: 50px;
     width: 500px;
     border-radius: 10px;
@@ -27,21 +37,32 @@ body {
 }
 
 .box {
-    background-color: rgb(42, 18, 28);
-    height: 40px;
-    width: 40px;
+    background-color: var(--palette-surface-primary);
+    /* height: 40px;
+    width: 40px; */
+    height: 100%;
+    width: 100%;
     border-radius: 10px;
     transition: background-color 0.2s;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: var(--font-weight-bold);
 }
 
 #board {
     position: relative;
     display: grid;
-    grid-template-columns: repeat(3, 40px);
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
     gap: 5px;
-    border: 5px solid rgb(42, 18, 28);
+    border: 5px solid var(--palette-surface-primary);
     padding: 5px;
     border-radius: 10px;
+
+    width: 500px;
+    height: 500px;
 }
 
 .red-color {
@@ -91,7 +112,7 @@ body {
     align-items: center;
     font-size: 16px;
     font-family: inherit;
-    background-color: rgb(42, 18, 28);
+    background-color: var(--palette-surface-primary);
     outline: none;
     border: none;
     font-weight: 700;
@@ -116,4 +137,32 @@ body {
     animation-duration: 1s;
     animation-iteration-count: infinite; */
     animation: highlight 500ms infinite;
+}
+
+.number-0 {
+    opacity: 0.5;
+}
+.number-1 {
+    color: #ffe5e5;
+}
+.number-2 {
+    color: #ffcccc;
+}
+.number-3 {
+    color: #ffb3b3;
+}
+.number-4 {
+    color: #ff9999;
+}
+.number-5 {
+    color: #ff8080;
+}
+.number-6 {
+    color: #ff6666;
+}
+.number-7 {
+    color: #ff4c4c;
+}
+.number-8 {
+    color: #ff3232;
 }

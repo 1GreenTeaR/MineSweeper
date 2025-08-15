@@ -72,7 +72,7 @@ function userAction(index, e) {
           },
           { bombs: 0, flags: 0 }
         );
-        if (amounts.bombs == amounts.flags) {
+        if (amounts.bombs <= amounts.flags) {
           neighbouringCells.forEach((index) => {
             if (!board.board[index].isFlagged) {
               openSquare(index);
@@ -89,10 +89,7 @@ function userAction(index, e) {
             }
           });
         }
-        console.log(neighbouringCells, amounts);
-        return;
-      }
-      openSquare(index);
+      } else openSquare(index);
     }
   } else if (e.which === 3 && !board.board[index].isOpened) {
     placeFlag(index);
@@ -153,13 +150,11 @@ function openSquare(index) {
   let element = document.getElementById(index);
   element.classList.add("opened");
 
-  // if (board.board[index].isBomb) {
-  //   element.classList.add("red-color");
-  // }
-
-  // if (board.board[index].isBomb) {
-  //   gameOver();
-  // }
+  if (board.board[index].isBomb) {
+    element.classList.add("red-color");
+    gameOver();
+    return;
+  }
 
   board.board[index].isOpened = true;
   if (board.board[index].isFlagged) {
@@ -173,7 +168,8 @@ function openSquare(index) {
     return a;
   }, 0);
 
-  element.innerHTML = amountOfBombs;
+  element.innerHTML = amountOfBombs ? amountOfBombs : "";
+  element.classList.add(`number-${amountOfBombs}`);
   let amountOfOpened = 0;
   for (let i = 0; i < board.board.length; i++) {
     if (board.board[i].isOpened || board.board[i].isBomb) {
@@ -236,7 +232,9 @@ function createBoard(width, height, bombPercentage) {
   }
   boardElement.innerHTML = "";
   boardElement.append(...elements);
-  boardElement.style.gridTemplateColumns = `repeat(${width}, 40px)`;
+  boardElement.style.gridTemplateColumns = `repeat(${width}, 1fr)`;
+  boardElement.style.gridTemplateRows = `repeat(${width}, 1fr)`;
+  boardElement.style.fontSize = `${200 / width}px`;
   // boardElement.innerHTML = html;
   return state;
 }
