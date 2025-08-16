@@ -1,3 +1,14 @@
+const icons = {
+  flag: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M5.75 1C6.16421 1 6.5 1.33579 6.5 1.75V3.6L8.22067 3.25587C9.8712 2.92576 11.5821 3.08284 13.1449 3.70797L13.5582 3.87329C14.9831 4.44323 16.5513 4.54967 18.0401 4.17746C18.6711 4.01972 19.1778 4.7036 18.8432 5.26132L17.5647 7.39221C17.2232 7.96137 17.0524 8.24595 17.0119 8.55549C16.9951 8.68461 16.9951 8.81539 17.0119 8.94451C17.0524 9.25405 17.2232 9.53863 17.5647 10.1078L19.1253 12.7089C19.4361 13.2269 19.1582 13.898 18.5721 14.0445L18.472 14.0695C16.7024 14.5119 14.8385 14.3854 13.1449 13.708C11.5821 13.0828 9.8712 12.9258 8.22067 13.2559L6.5 13.6V21.75C6.5 22.1642 6.16421 22.5 5.75 22.5C5.33579 22.5 5 22.1642 5 21.75V1.75C5 1.33579 5.33579 1 5.75 1Z" fill="currentColor"/>
+</svg>`,
+  bomb: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M17 14.5C17 18.6421 13.6421 22 9.5 22C5.35786 22 2 18.6421 2 14.5C2 10.3579 5.35786 7 9.5 7C13.6421 7 17 10.3579 17 14.5Z" fill="currentColor"/>
+<path d="M17.9811 2.35316C18.1668 1.88228 18.8332 1.88228 19.0189 2.35316L19.6733 4.01242C19.73 4.15618 19.8438 4.26998 19.9876 4.32668L21.6468 4.98108C22.1177 5.16679 22.1177 5.83321 21.6468 6.01892L19.9876 6.67332C19.8438 6.73002 19.73 6.84382 19.6733 6.98758L19.0189 8.64684C18.8332 9.11772 18.1668 9.11772 17.9811 8.64684L17.3267 6.98758C17.27 6.84382 17.1562 6.73002 17.0124 6.67332L15.3532 6.01892C14.8823 5.83321 14.8823 5.16679 15.3532 4.98108L17.0124 4.32668C17.1562 4.26998 17.27 4.15618 17.3267 4.01242L17.9811 2.35316Z" fill="currentColor"/>
+<path d="M16.0175 9.04328L16.7669 8.29386L16.4669 7.53312L15.7063 7.23315L14.9568 7.98261C15.3407 8.30436 15.6957 8.6594 16.0175 9.04328Z" fill="currentColor"/>
+</svg>`,
+};
+
 let board;
 // const difficulties = { EASY: { size: { width: 7, height: 7 }, bombPercentage: 0.1 }, }
 // let settings = { size: { width: 15, height: 15 }, difficulty: }
@@ -10,10 +21,7 @@ function gameOver() {
   board.isGameOver = true;
   for (let i = 0; i < board.board.length; i++) {
     if (board.board[i].isBomb) {
-      let element = document.getElementById(i);
-      element.classList.add("opened");
-      element.classList.add("bomb");
-      element.classList.remove("flag");
+      placeBomb(i);
     }
   }
   document.getElementById("header").classList.add("game-over");
@@ -56,10 +64,36 @@ function userAction(index, e) {
     if (board.board[index].isFlagged) {
       return;
     }
+
     if (board.board[index].isBomb) {
-      const element = document.getElementById(index);
-      element.classList.add("boom");
-      gameOver();
+      let hasOpened = false;
+      for (let i = 0; i < board.board.length; i++) {
+        if (board.board[i].isOpened) {
+          hasOpened = true;
+          break;
+        }
+      }
+
+      if (hasOpened) {
+        const element = document.getElementById(index);
+        element.classList.add("boom");
+        gameOver();
+      } else {
+        let notAbomb = 0;
+        for (let i = 0; i < board.board.length; i++) {
+          if (!board.board[i].isBomb) {
+            notAbomb++;
+          }
+        }
+        let placeAbomb = Math.floor(Math.random() * notAbomb);
+        for (let i = 0; i < board.board.length; i++) {
+          if (board.board[i].isBomb) continue;
+          if (placeAbomb === 0) board.board[i].isBomb = true;
+          placeAbomb--;
+        }
+        board.board[index].isBomb = false;
+        userAction(index, e);
+      }
     } else {
       if (board.board[index].isOpened === true) {
         let neighbouringCells = getNeighbouringCellsIndexes(index);
@@ -110,14 +144,25 @@ function victoryScreen() {
 }
 function placeFlag(index) {
   board.board[index].isFlagged = !board.board[index].isFlagged;
+  const element = document.getElementById(index);
   if (board.board[index].isFlagged) {
-    document.getElementById(index).classList.add("flag");
+    element.classList.add("flag");
+    element.innerHTML = icons.flag;
     board.amountOfFlags++;
   } else {
-    document.getElementById(index).classList.remove("flag");
+    element.classList.remove("flag");
+    element.innerHTML = "";
     board.amountOfFlags--;
   }
   renderHeader();
+}
+
+function placeBomb(index) {
+  const element = document.getElementById(index);
+  element.classList.add("bomb");
+  element.classList.add("opened");
+  element.classList.remove("flag");
+  element.innerHTML = icons.bomb;
 }
 
 function getNeighbouringCellsIndexes(index) {

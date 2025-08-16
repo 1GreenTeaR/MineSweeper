@@ -1,10 +1,16 @@
 :root {
     --palette-background: rgb(21, 9, 14);
+    --palette-primary: rgb(42, 82, 156);
     --palette-surface-primary:rgb(42, 18, 28);
+    --palette-negative: #cd3640;
 
     --font-weight-regular: 400;
     --font-weight-bold: 700;
     --font-weight-black: 900;
+}
+
+* {
+    box-sizing: border-box;
 }
 
 html {
@@ -76,13 +82,17 @@ body {
 }
 
 .bomb {
-    background-image: url(assets/bomb.svg);
+    padding: 20%;
+    background-color: var(--palette-negative);
+}
+
+.boom {
+    /* color: var(--palette-negative); */
 }
 
 .flag {
-    background-color: unset;
-    color: white;
-    background-image: url(assets/flag.svg);
+    color: var(--palette-primary);
+    padding: 20%;
 }
 
 .overlay {
