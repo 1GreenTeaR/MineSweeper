@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Micro+5&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Micro+5&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="styles.css" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -12,9 +15,45 @@
 
   <body>
     <div class="container">
-      <div id="header">
-        <div id="amount-of-bombs"></div>
-        <div id="timer"></div>
+      <div class="header-container" id="header-container">
+        <div id="header">
+          <div id="amount-of-bombs"></div>
+        </div>
+        <div class="control-panel">
+          <button class="button" onclick="start()">
+            <svg
+              fill="currentColor"
+              version="1.1"
+              viewBox="0 0 16 16"
+              xmlns="http://www.w3.org/2000/svg"
+              class="icon"
+            >
+              <path d="m6.7325 1.24v6.76h2.535v-6.76z" stroke-width=".845" />
+              <path
+                d="m5.0125 10.988c-1.65-1.6499-1.65-4.3251 0-5.975l-1.7925-1.7925c-2.6399 2.6399-2.6399 6.9202 0 9.5601 2.6399 2.6399 6.9202 2.6399 9.5601 0 2.6399-2.6399 2.6399-6.9202 0-9.5601l-1.7926 1.7925c1.65 1.65 1.65 4.3251 0 5.975-1.6499 1.65-4.3251 1.65-5.975 0z"
+                stroke-width=".845"
+              />
+            </svg>
+          </button>
+          <button class="button" onclick="changeDifficulty()">
+            <svg
+              fill="currentColor"
+              version="1.1"
+              viewBox="0 0 28 28"
+              xmlns="http://www.w3.org/2000/svg"
+              class="icon"
+            >
+              <path
+                d="m15.333 12.667h8v-8h-8zm-2.6666-10.667v2.6666h-10.667v21.333h21.333v-10.667h2.6666v-13.333z"
+                fill-rule="evenodd"
+                stroke-width="1.2"
+              />
+            </svg>
+          </button>
+        </div>
+        <div id="header">
+          <div id="timer"></div>
+        </div>
       </div>
       <div id="board"></div>
     </div>

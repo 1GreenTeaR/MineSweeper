@@ -5,6 +5,25 @@ const icons = {
   bomb: `<svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m18.293 4.293-1.086 1.086-1.086-1.086a.999.999 0 0 0-1.414 0l-1.249 1.249A8.427 8.427 0 0 0 10.499 5C5.813 5 2 8.813 2 13.5S5.813 22 10.499 22s8.5-3.813 8.5-8.5a8.42 8.42 0 0 0-.431-2.654L19.914 9.5a.999.999 0 0 0 0-1.414l-1.293-1.293 1.09-1.09C19.94 5.474 20.556 5 21 5h1V3h-1c-1.4 0-2.584 1.167-2.707 1.293zM10.499 10c-.935 0-1.813.364-2.475 1.025A3.48 3.48 0 0 0 7 13.5H5c0-1.468.571-2.849 1.609-3.888A5.464 5.464 0 0 1 10.499 8v2z"/></svg>`,
 };
 
+const difficulties = {
+  EASY: {
+    width: 7,
+    height: 7,
+    bombPercentage: 0.01,
+  },
+  NORMAL: {
+    width: 10,
+    height: 10,
+    bombPercentage: 0.16,
+  },
+  HARD: {
+    width: 14,
+    height: 14,
+    bombPercentage: 0.17,
+  },
+};
+const sizes = ["EASY", "NORMAL", "HARD"];
+const settings = { selectedSize: 1 };
 let board;
 // const difficulties = { EASY: { size: { width: 7, height: 7 }, bombPercentage: 0.1 }, }
 // let settings = { size: { width: 15, height: 15 }, difficulty: }
@@ -12,6 +31,7 @@ let intervalId;
 document
   .getElementById("board")
   .addEventListener(`contextmenu`, (e) => e.preventDefault());
+
 function gameOver() {
   clearInterval(intervalId);
   board.isGameOver = true;
@@ -20,7 +40,7 @@ function gameOver() {
       placeBomb(i);
     }
   }
-  document.getElementById("header").classList.add("game-over");
+  document.getElementById("header-container").classList.add("game-over");
   let boardElement = document.getElementById("board");
 
   let overlayElement = document.createElement("div");
@@ -28,27 +48,79 @@ function gameOver() {
   boardElement.append(overlayElement);
 
   let gameOverText = document.createElement("div");
-  gameOverText.innerHTML = "Game Over";
+  gameOverText.innerHTML = "GAME OVER";
   gameOverText.classList.add("game-over-text");
   overlayElement.append(gameOverText);
 
   let resetButton = document.createElement("button");
   resetButton.classList.add("button", "primary");
   resetButton.onclick = start;
-  resetButton.innerHTML = "Reset";
+  resetButton.innerHTML = "RESET";
   overlayElement.append(resetButton);
 }
+
+function victoryScreen() {
+  clearInterval(intervalId);
+  let modal = document.createElement("div");
+  modal.classList.add("modal");
+  modal.style.position = "fixed";
+  modal.style.top = 0;
+  modal.style.left = 0;
+  modal.style.right = 0;
+  modal.style.bottom = 0;
+  modal.style.background = "rgba(0,0,0,0.6)";
+  modal.style.display = "flex";
+  modal.style.justifyContent = "center";
+  modal.style.alignItems = "center";
+  document.body.appendChild(modal);
+
+  let scoresDiv = document.createElement("div");
+  scoresDiv.classList.add("scores-container");
+
+  let victoryHeader = document.createElement("div");
+  victoryHeader.classList.add("victory-header");
+  victoryHeader.innerHTML = "LEADER BOARD";
+
+  let leaderBoard = document.createElement("div");
+  leaderBoard.classList.add("leader-board");
+
+  let stat1 = document.createElement("div");
+  stat1.innerHTML = "1min 23sec EASY";
+
+  leaderBoard.appendChild(stat1);
+
+  scoresDiv.appendChild(victoryHeader);
+  scoresDiv.appendChild(leaderBoard);
+
+  modal.append(scoresDiv);
+
+  let victoryButton = document.createElement("button");
+  victoryButton.classList.add("button", "primary");
+  victoryButton.onclick = () => {
+    start();
+    modal.remove();
+  };
+  victoryButton.innerHTML = "NEW GAME";
+  modal.append(victoryButton);
+}
+
 function start() {
   if (intervalId >= 0) {
     clearInterval(intervalId);
   }
-  board = createBoard(7, 7, 0.1);
-  document.getElementById("header").classList.remove("game-over");
+  const props = difficulties[sizes[settings.selectedSize]];
+  board = createBoard(props.width, props.height, props.bombPercentage);
+  document.getElementById("header-container").classList.remove("game-over");
   renderHeader();
   intervalId = setInterval(() => {
     board.timer++;
     renderHeader();
   }, 1000);
+}
+
+function changeDifficulty() {
+  settings.selectedSize = (settings.selectedSize + 1) % sizes.length;
+  start();
 }
 
 function userAction(index, e) {
@@ -125,19 +197,7 @@ function userAction(index, e) {
     placeFlag(index);
   }
 }
-function victoryScreen() {
-  let modal = document.createElement("div");
-  modal.style.position = "fixed";
-  modal.style.top = 0;
-  modal.style.left = 0;
-  modal.style.right = 0;
-  modal.style.bottom = 0;
-  modal.style.background = "rgba(0,0,0,0.6)";
-  modal.style.display = "flex";
-  modal.style.justifyContent = "center";
-  modal.style.alignItems = "center";
-  document.body.appendChild(modal);
-}
+
 function placeFlag(index) {
   board.board[index].isFlagged = !board.board[index].isFlagged;
   const element = document.getElementById(index);
