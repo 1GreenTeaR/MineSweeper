@@ -24,9 +24,9 @@ const difficulties = {
 };
 const sizes = ["EASY", "NORMAL", "HARD"];
 const settings = { selectedSize: 1 };
+let currentDifficulty = sizes[settings.selectedSize];
+
 let board;
-// const difficulties = { EASY: { size: { width: 7, height: 7 }, bombPercentage: 0.1 }, }
-// let settings = { size: { width: 15, height: 15 }, difficulty: }
 let intervalId;
 document
   .getElementById("board")
@@ -72,6 +72,7 @@ function victoryScreen() {
   modal.style.display = "flex";
   modal.style.justifyContent = "center";
   modal.style.alignItems = "center";
+
   document.body.appendChild(modal);
 
   let scoresDiv = document.createElement("div");
@@ -84,10 +85,60 @@ function victoryScreen() {
   let leaderBoard = document.createElement("div");
   leaderBoard.classList.add("leader-board");
 
-  let stat1 = document.createElement("div");
-  stat1.innerHTML = "1min 23sec EASY";
+  let scores = JSON.parse(localStorage.getItem("minesweeperScores") || "[]");
 
-  leaderBoard.appendChild(stat1);
+  scores.push({
+    time: board.timer,
+    difficulty: currentDifficulty,
+    date: new Date().toISOString(),
+  });
+
+  scores.sort((a, b) => a.time - b.time);
+
+  scores = scores.slice(0, 10);
+
+  localStorage.setItem("minesweeperScores", JSON.stringify(scores));
+
+  function formatTime(sec) {
+    const h = Math.floor(sec / 3600);
+    const m = Math.floor((sec % 3600) / 60);
+    const s = sec % 60;
+    if (h > 0) {
+      return `${h}HOUR ${m}MIN ${s}SEC`;
+    } else {
+      return `${m}MIN ${s}SEC`;
+    }
+  }
+
+  function formatDate(isoString) {
+    const date = new Date(isoString);
+    const d = date.getDate();
+    const m = date.getMonth() + 1;
+    const y = date.getFullYear() % 100;
+    return `${d}.${m}.${y}`;
+  }
+
+  scores.forEach((score, ind) => {
+    let stat = document.createElement("div");
+    stat.classList.add("leader-board-stat");
+
+    let posDiv = document.createElement("div");
+    posDiv.style.flex = "0 0 auto";
+    posDiv.style.marginRight = "10px";
+    posDiv.innerHTML = `${ind + 1}.`;
+
+    let infoDiv = document.createElement("div");
+    infoDiv.innerHTML = `${formatTime(score.time)} ${score.difficulty}`;
+
+    let dateDiv = document.createElement("div");
+    dateDiv.innerHTML = formatDate(score.date);
+
+    stat.appendChild(posDiv);
+    stat.appendChild(infoDiv);
+    stat.appendChild(dateDiv);
+
+    leaderBoard.appendChild(stat);
+  });
 
   scoresDiv.appendChild(victoryHeader);
   scoresDiv.appendChild(leaderBoard);
@@ -121,6 +172,7 @@ function start() {
 function changeDifficulty() {
   settings.selectedSize = (settings.selectedSize + 1) % sizes.length;
   start();
+  currentDifficulty = sizes[settings.selectedSize];
 }
 
 function userAction(index, e) {

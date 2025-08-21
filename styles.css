@@ -198,7 +198,7 @@ body {
 .modal {
     display: flex;
     flex-direction: column;
-    gap: 20;
+    gap: 20px;
 }
 
 .victory-header {
@@ -209,8 +209,13 @@ body {
     transition: background-color 0.2s;
     font-size: var(--font-size-regular);
 }
-.leader-board:hover {
-    background-color: rgba(255,255,255,0.1);
+.leader-board-stat {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.leader-board-stat:hover {
+    background-color: #ffffff30
 }
 
 
