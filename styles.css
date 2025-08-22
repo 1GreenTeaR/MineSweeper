@@ -33,9 +33,12 @@ html {
     background-color: var(--palette-background);
     background-image: url(/assets/hills.jpg);
     background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
     color: white;
     /* font-family: 'Open Sans', sans-serif; */
     font-family: "Micro 5", sans-serif;
+    line-height: 1;
 }
 
 body {
@@ -50,6 +53,12 @@ body {
 .container {
     background-color: var(--palette-background);
     padding: 15px;
+
+    max-width:  calc(100vw - 10px);
+    /* max-height: calc(100vh - 20px); */
+
+    width: 500px;
+    /* height: 500px; */
 }
 
 #header {
@@ -111,9 +120,15 @@ body {
     /* border: 5px solid var(--palette-surface-primary); */
     /* border-radius: 10px; */
 
-    width: 500px;
-    height: 500px;
+    width: 100%;
+    /* height: 100%; */
+
+    aspect-ratio: 1;
+
+    /* max-width:  100vw;
+    max-height: 100vh; */
 }
+
 
 .red-color {
     color: red;
@@ -193,7 +208,16 @@ body {
     padding: 10px;
     text-align: center;
     font-size: var(--font-size-small);
+    overflow-y: scroll;
+
+    scrollbar-width: none;
 }
+
+.scores-container::-webkit-scrollbar {
+    height: 4px;              /* height of horizontal scrollbar ← You're missing this */
+    width: 4px;               /* width of vertical scrollbar */
+    border: 1px solid #d5d5d5;
+  }
 
 .modal {
     display: flex;
@@ -213,6 +237,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 4px;
 }
 .leader-board-stat:hover {
     background-color: #ffffff30
@@ -277,4 +302,32 @@ body {
 }
 .number-8 {
     color: #808080; /* gray */
+}
+
+.mobile-tutorial {
+    display: none;
+    color: #ffffff;
+    font-weight: var(--font-weight-bold);
+    font-size: 20px;
+    filter: drop-shadow(0 0 2px#000000) ;
+}
+
+
+@media (max-width: 400px) {
+    .container {
+        width: 98vw;
+        padding: 5px;
+        max-width: 100vw;
+    }
+
+    .header-container{
+    margin-bottom: 10px;
+    }
+    #board{
+    gap:2px;
+    }
+
+    .mobile-tutorial {
+        display: block;
+    }
 }

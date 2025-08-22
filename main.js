@@ -9,7 +9,7 @@ const difficulties = {
   EASY: {
     width: 7,
     height: 7,
-    bombPercentage: 0.01,
+    bombPercentage: 0.15,
   },
   NORMAL: {
     width: 10,
@@ -95,7 +95,7 @@ function victoryScreen() {
 
   scores.sort((a, b) => a.time - b.time);
 
-  scores = scores.slice(0, 10);
+  // scores = scores.slice(0, 14);
 
   localStorage.setItem("minesweeperScores", JSON.stringify(scores));
 
@@ -175,12 +175,12 @@ function changeDifficulty() {
   currentDifficulty = sizes[settings.selectedSize];
 }
 
-function userAction(index, e) {
+function userAction(index, isFlag) {
   // console.log(e)
   if (board.isGameOver) {
     return;
   }
-  if (e.which === 1) {
+  if (!isFlag) {
     if (board.board[index].isFlagged) {
       return;
     }
@@ -245,7 +245,7 @@ function userAction(index, e) {
         }
       } else openSquare(index);
     }
-  } else if (e.which === 3 && !board.board[index].isOpened) {
+  } else if (isFlag && !board.board[index].isOpened) {
     placeFlag(index);
   }
 }
@@ -379,7 +379,12 @@ function createBoard(width, height, bombPercentage) {
     newElement.classList.add(...classes);
     newElement.id = i;
     newElement.addEventListener("mousedown", (e) => {
-      userAction(i, e);
+      if (e.which !== 1) return;
+      userAction(i, false);
+    });
+
+    newElement.addEventListener("contextmenu", (e) => {
+      userAction(i, true);
     });
     elements.push(newElement);
   }
