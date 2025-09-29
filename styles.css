@@ -31,7 +31,7 @@
 
 html {
     background-color: var(--palette-background);
-    background-image: url(/assets/hills.jpg);
+    background-image: url(assets/hills.jpg);
     background-size: cover;
     background-attachment: fixed;
     background-repeat: no-repeat;
